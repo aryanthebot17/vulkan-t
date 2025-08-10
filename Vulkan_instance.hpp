@@ -5,6 +5,7 @@
 #include <iostream> 
 #include <stdexcept>
 #include<cstdlib>
+#include<vector>
 
 
 // strucure
@@ -24,7 +25,7 @@ private:
 
 public:
 	// default constructor
-	 StartVulkan() {
+	StartVulkan() {
 
 	}
 
@@ -66,17 +67,32 @@ public:
 		std::cout << "sucessfully created instance vulkan";
 	}
 
+	// now for selecting the gpu for the project
+	VkPhysicalDevice selectGpu() {
+		// ask vulkan how many gpu you have that support vulkan
+		uint32_t List_of_devices = 0;
+		vkEnumeratePhysicalDevices(instance, &List_of_devices, nullptr);
+		// if there are no such  gpu found
+		if (List_of_devices == 0) {
+			throw std::runtime_error("no vulkan supported gpu found");
+
+		}
+
+		// now return any one out of available ones
+		// create a list  to hold all available gpu
+
+		std::vector<VkPhysicalDevice> devices(List_of_devices);
+
+		// fill the list with gpu handles
+		vkEnumeratePhysicalDevices(instance, &List_of_devices, devices.data());
+
+		// loop  through each gpu and check if its suitable;
+		for (auto it = devices.begin(); it != devices.end(); it++) {
+
+		}
+
+	}
 
 
 
-
-
-
-};
-
-
-
-
-
-	
-
+	};
